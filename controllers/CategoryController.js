@@ -1,7 +1,9 @@
    const Category = require('../models/Category');
-   const { validationResult } = require('express-validator');
+   const { validationResult, body } = require('express-validator');
 
    exports.addCategory = async (req, res) => {
+
+        try {
        const { categoryName, description } = req.body;
 
        //field validation
@@ -30,6 +32,10 @@
         // ==>> birinci yol <<==
         const addedCategory = await category.save({new:true});
         res.status(200).json(addedCategory);
+    }
+    catch(err) {
+       return res.status(500).json({ errors: [{ message: err.message}] });
+    }
         
    }
 
@@ -38,12 +44,53 @@
 
 
    exports.getCategory = async (req, res) => {
+        try {
+            const category = await Category.findById({_id: req.params.id})
+            res.status(200).json(category)
 
+        } catch (error) {
+            return res.status(500).json({errors: [{ message: error.message}]})
+        }
    }
+
+
+
 
    exports.updateCategory = async (req, res) => {
+       try {
+
+        // validation
+           const validationErr = validationResult(req);
+           if(validationErr?.errors?.length > 0) {
+               return res.status(400).json({ errors: validationErr.array() });
+           }
+
+
+        // update
+           const updatedCategory = await Category.findOneAndUpdate(
+               {_id: req.body.id},
+               {
+                   // categoryName: req.body.categoryName,
+                   // description: req.body.description
+                   ...req.body,
+                   status: 'updated',
+                   updateDate: Date.now(),
+               },
+               {
+                   new: true,
+                   runValidators: true
+               }
+           );
+            // res.status(200).send('Category Updated')
+            res.status(200).json(updatedCategory);
+
+       } catch (error) {
+           return res.status(500).json({errors: [{message: err.message}]});
+       }
 
    }
+
+
 
    exports.deleteCategory = async (req, res) => {
 
