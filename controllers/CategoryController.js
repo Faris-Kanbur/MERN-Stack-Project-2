@@ -94,6 +94,23 @@
 
    exports.deleteCategory = async (req, res) => {
 
+    try {
+        const deletedCategory = await Category.findOneAndUpdate(
+            {_id: req.params.id},
+            {
+                status: 'deleted',
+                deletedDate: Date.now(),
+            },
+            {
+                new: true,
+            }
+        );
+        res.status(200).json(deletedCategory);
+        res.status(200).send('Category Deleted');
+
+    } catch (error) {
+        return res.status(500).json({message: [{messsage: error.message}]});
+    }
    }
 
    exports.getCategories = async (req, res) => {
