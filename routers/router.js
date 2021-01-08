@@ -6,3 +6,5 @@ const ProductRouter = require('./ProductRouter');
 router.use('/categories', CategoryRouter);
 
 router.use('/products', ProductRouter);
+
+module.exports = router;
