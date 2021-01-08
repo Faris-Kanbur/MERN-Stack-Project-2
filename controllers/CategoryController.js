@@ -42,7 +42,6 @@
 
 
 
-
    exports.getCategory = async (req, res) => {
         try {
             const category = await Category.findById({_id: req.params.id})
@@ -105,7 +104,7 @@
                 new: true,
             }
         );
-        res.status(200).json(deletedCategory);
+        res.status(200).json(deletedCategory); // bunu kaldirirsan veri gitmezsa dece asagidaki msj gider ve veri silinmis olur 
         res.status(200).send('Category Deleted');
 
     } catch (error) {
@@ -113,7 +112,17 @@
     }
    }
 
+
+
    exports.getCategories = async (req, res) => {
+       try {
+           const categories = await Category.find({}).where('status', /[^deleted]/).select('-status');
+           res.status(200).json(categories);
+
+       } catch (error) {
+           return res.status(500).json({ error: [{message: error.message}]})
+           
+       }
 
    }
 
