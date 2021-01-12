@@ -1,5 +1,6 @@
    const Category = require('../models/Category');
    const { validationResult, body } = require('express-validator');
+   const checkError = require('../helper/checkError');
 
    exports.addCategory = async (req, res) => {
 
@@ -8,15 +9,17 @@
 
        //field validation
        const validationErr = validationResult(req);
-       if (validationErr?.errors?.length > 0) {
-           return res.status(400).json({errors: validationErr.array()});
-       }
+       checkError(res, validationErr?.errors?.length > 0,validationErr.array() )
+    //    if (validationErr?.errors?.length > 0) {
+    //        return res.status(400).json({errors: validationErr.array()});
+    //}
 
        // category exist check
        const existCategory = await Category.findOne({ categoryName: categoryName });
-       if(existCategory) {
-           return res.status(400).json({errors: [{message : "Category already exist"}]})
-       }
+       checkError(res, existCategory, "Category already exist" )
+    //    if(existCategory) {
+    //        return res.status(400).json({errors: [{message : "Category already exist"}]})
+    //}
 
        // save category
        const category = new Category({
@@ -34,9 +37,10 @@
         res.status(200).json(addedCategory);
     }
     catch(err) {
-        if(err){
-       return res.status(500).json({ errors: [{ message: err.message}] });
-    }
+    // if(err){
+    // return res.status(500).json({ errors: [{ message: err.message}] });
+    // }
+    checkError(res, err, err.message, 500);
     }
         
    }
@@ -50,10 +54,12 @@
             res.status(200).json(category)
 
         } catch (error) {
-            if(err){
-            return res.status(500).json({errors: [{ message: error.message}]})
-            }
+            // if(err){
+            // return res.status(500).json({errors: [{ message: error.message}]})
+            // }
+            checkError(res, err, err.message, 500);
         }
+        
    }
 
 
@@ -64,9 +70,10 @@
 
         // validation
            const validationErr = validationResult(req);
-           if(validationErr?.errors?.length > 0) {
-               return res.status(400).json({ errors: validationErr.array() });
-           }
+        // if(validationErr?.errors?.length > 0) {
+        // return res.status(400).json({ errors: validationErr.array() });
+        //}
+           checkError(res, validationErr?.errors?.length > 0, validationErr.array())
 
 
         // update
@@ -88,9 +95,10 @@
             res.status(200).json(updatedCategory);
 
        } catch (error) {
-           if(err){
-           return res.status(500).json({errors: [{message: err.message}]});
-           }
+        // if(err){
+        // return res.status(500).json({errors: [{message: err.message}]});
+        // }
+        checkError(res, err, err.message, 500);
        }
 
    }
@@ -114,9 +122,10 @@
         res.status(200).send('Category Deleted');
 
     } catch (error) {
-        if(err){
-        return res.status(500).json({message: [{messsage: error.message}]});
-        }
+        // if(err){
+        // return res.status(500).json({message: [{messsage: error.message}]});
+        // }
+        checkError(res, err, err.message, 500);
     }
    }
 
@@ -128,9 +137,10 @@
            res.status(200).json(categories);
 
        } catch (error) {
-           if(err){
-           return res.status(500).json({ error: [{message: error.message}]})
-        }
+        // if(err){
+        // return res.status(500).json({ error: [{message: error.message}]})
+        //}
+        checkError(res, err, err.message, 500);
        }
 
    }
@@ -141,9 +151,10 @@
            res.status(200).send('Data is deleted');
        } 
        catch (error) {
-           if(err){
-            return res.status(500).json({ error: [{message: error.message}]})
-           }
+        // if(err){
+        // return res.status(500).json({ error: [{message: error.message}]})
+        // }
+        checkError(res, err, err.message, 500);
        }
    }
 
