@@ -21,25 +21,26 @@ const schema = new Schema({
         type: Number,
         default: 0,
     },
-    categoryId:{
-        type: String,
+    category:{
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
     },
     status:{
         type: String,
         default: 'created',
     },
-    createdDate:{
-        type: Date,
-        default:Date.now,
-    },
-    updateddDate:{
-        type: Date,
-    },
-    deletedDate:{
+    // createdDate:{
+    //     type: Date,
+    //     default:Date.now,
+    // },
+    // updateddDate:{
+    //     type: Date,
+    // },
+    deletedAt:{
         type: Date,
     },
 
-});
+}, {timestamps:true, collection: 'Products'}); // create date and update date otomatik olusturulur timestamps ile
 
 
 module.exports = Product = mongoose.model('Product', schema);

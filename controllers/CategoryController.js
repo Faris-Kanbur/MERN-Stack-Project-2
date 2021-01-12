@@ -53,7 +53,7 @@
             const category = await Category.findById({_id: req.params.id})
             res.status(200).json(category)
 
-        } catch (error) {
+        } catch (err) {
             // if(err){
             // return res.status(500).json({errors: [{ message: error.message}]})
             // }
@@ -84,7 +84,7 @@
                    // description: req.body.description
                    ...req.body,
                    status: 'updated',
-                   updateDate: Date.now(),
+                //    updateDate: Date.now(),
                },
                {
                    new: true,
@@ -94,7 +94,7 @@
             // res.status(200).send('Category Updated')
             res.status(200).json(updatedCategory);
 
-       } catch (error) {
+       } catch (err) {
         // if(err){
         // return res.status(500).json({errors: [{message: err.message}]});
         // }
@@ -112,7 +112,7 @@
             {_id: req.params.id},
             {
                 status: 'deleted',
-                deletedDate: Date.now(),
+                deletedAt: Date.now(),
             },
             {
                 new: true,
@@ -121,7 +121,7 @@
         res.status(200).json(deletedCategory); // bunu kaldirirsan veri gitmezsa dece asagidaki msj gider ve veri silinmis olur 
         res.status(200).send('Category Deleted');
 
-    } catch (error) {
+    } catch (err) {
         // if(err){
         // return res.status(500).json({message: [{messsage: error.message}]});
         // }
@@ -136,7 +136,7 @@
            const categories = await Category.find({}).where('status', /[^deleted]/).select('-status');
            res.status(200).json(categories);
 
-       } catch (error) {
+       } catch (err) {
         // if(err){
         // return res.status(500).json({ error: [{message: error.message}]})
         //}
@@ -150,7 +150,7 @@
            await Category.deleteOne({ _id: req.params.id});
            res.status(200).send('Data is deleted');
        } 
-       catch (error) {
+       catch (err) {
         // if(err){
         // return res.status(500).json({ error: [{message: error.message}]})
         // }

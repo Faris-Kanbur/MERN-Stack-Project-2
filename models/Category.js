@@ -13,13 +13,17 @@ const schema = new Schema({
     description: {
         type: String,
     },
-    createdDate: {
+    // createdDate: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
+    // updatedDate: {
+    //     type: Date,
+    // }
+    deletedAt : {
         type: Date,
-        default: Date.now,
     },
-    updatedDate: {
-        type: Date,
-    }
-});
+    products:[{ type: Schema.Type.ObjectId, ref: 'Product'}]
+}, {timestamps:true, collection: 'Categories'}); // create date and update date otomatik olusturulur timestamps ile
 
 module.exports = Category = mongoose.model('Category', schema);

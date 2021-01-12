@@ -18,4 +18,4 @@ const checkError = (res, variable, message, code = 400) => {
     }
 }
 
-module.exports = checkError;
+module.exports = checkError; 
