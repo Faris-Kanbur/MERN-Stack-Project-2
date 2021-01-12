@@ -34,7 +34,9 @@
         res.status(200).json(addedCategory);
     }
     catch(err) {
+        if(err){
        return res.status(500).json({ errors: [{ message: err.message}] });
+    }
     }
         
    }
@@ -48,7 +50,9 @@
             res.status(200).json(category)
 
         } catch (error) {
+            if(err){
             return res.status(500).json({errors: [{ message: error.message}]})
+            }
         }
    }
 
@@ -84,7 +88,9 @@
             res.status(200).json(updatedCategory);
 
        } catch (error) {
+           if(err){
            return res.status(500).json({errors: [{message: err.message}]});
+           }
        }
 
    }
@@ -108,7 +114,9 @@
         res.status(200).send('Category Deleted');
 
     } catch (error) {
+        if(err){
         return res.status(500).json({message: [{messsage: error.message}]});
+        }
     }
    }
 
@@ -120,10 +128,23 @@
            res.status(200).json(categories);
 
        } catch (error) {
+           if(err){
            return res.status(500).json({ error: [{message: error.message}]})
-           
+        }
        }
 
+   }
+
+   exports.destroyCategory = async (req, res) => {
+       try {
+           await Category.deleteOne({ _id: req.params.id});
+           res.status(200).send('Data is deleted');
+       } 
+       catch (error) {
+           if(err){
+            return res.status(500).json({ error: [{message: error.message}]})
+           }
+       }
    }
 
   
